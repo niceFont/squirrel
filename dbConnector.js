@@ -1,32 +1,14 @@
 const fastifyPlugin = require("fastify-plugin")
-const mysql = require("mysql2/promise")
-const Sequelize = require("sequelize")
-const { User, UserConfig } = require("./Models/User")
-
+const DB = require("./models")
 
 async function MySQLConnector(fastify, options) {
     try {
-        const sequelize = new Sequelize(options.database, options.user, options.password, {
-            host: options.host,
-            dialect: "mysql",
-            pool: {
-                max: 10,
-                min: 0,
-                acquire: 30000,
-                idle: 10000
-            }
-        })
 
-        User.init(UserConfig, {
-            sequelize,
-            modelName: "user"
-        })
+        await DB.sequelize.authenticate()
 
-        const connection = await sequelize.authenticate()
+        await DB.User.sync()
 
-        const l = await User.sync()
-        console.log(l)
-        fastify.decorate("mysql", connection)
+        fastify.decorate("mysql", DB)
 
     } catch (error) {
         console.error(error)

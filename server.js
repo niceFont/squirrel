@@ -1,12 +1,7 @@
 const mysql = require("mysql2/promise")
 const fastify = require("fastify")({ logger: true })
 
-fastify.register(require("./dbConnector"), {
-    host: "localhost",
-    password: "1234",
-    user: "root",
-    database: "test"
-})
+fastify.register(require("./dbConnector"))
 fastify.register(require("./router"))
 const start = async () => {
     try {
@@ -20,3 +15,5 @@ const start = async () => {
 
 
 start()
+
+module.exports = fastify
