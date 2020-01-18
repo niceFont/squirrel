@@ -1,4 +1,5 @@
 const Fastify = require("fastify")
+const db = require("../models/index")
 
 module.exports = function BuildFastify() {
     const fastify = Fastify()
