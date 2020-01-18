@@ -10,10 +10,9 @@ jobs:
       - image: circleci/node:current
       - image: circleci/mysql:8.0.4
         environment:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: 1234
           MYSQL_DATABASE: database_test
-          MYSQL_USER: root
-          MYSQL_PASSWORD: "1234"
+          MYSQL_PASSWORD: 1234
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
