@@ -8,12 +8,10 @@ jobs:
     docker:
       # specify the version you desire here
       - image: circleci/node:current
-      - image: circleci/mysql:8.0.4
+      - image: circleci/mysql:latest
         environment:
-          MYSQL_ROOT_PASSWORD: root
+          MYSQL_ROOT_PASSWORD: 1234
           MYSQL_DATABASE: database_test
-          MYSQL_USER: root
-          MYSQL_PASSWORD: "1234"
       # Specify service dependencies here if necessary
       # CircleCI maintains a library of pre-built images
       # documented at https://circleci.com/docs/2.0/circleci-images/
@@ -23,22 +21,20 @@ jobs:
 
     steps:
       - checkout
+      - run:
+          name: Installing dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.3.0
       # Download and cache dependencies
+      - run:
+          name: Waiting for MySQL to be ready
+          command: dockerize -wait tcp://localhost:3306 -timeout 1m
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             # fallback to using the latest cache if no exact match is found
             - v1-dependencies-
-      - run:
-          name: Waiting for MySQL to be ready
-          command: |
-            for i in `seq 1 10`;
-            do
-                nc -z 127.0.0.1 3306 && echo Success && exit 0
-                echo -n .
-                sleep 1
-            done
-            echo Failed waiting for MySQL && exit 1
       - run: 
           name: Installing dependencies
           command: npm install
@@ -49,6 +45,9 @@ jobs:
           key: v1-dependencies-{{ checksum "package.json" }}
 
       # run tests!
+      - run:
+          name: Running Migrations
+          command: NODE_ENV=test npx sequelize-cli db:migrate
       - run:
           name: Seeding Test Database
           command: npm run seed:test
