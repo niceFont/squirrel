@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "NODE_ENV=test tap",
+    "test": "NODE_ENV=test tap --test-ignore=/mock/*",
+    "coverage": "NODE_ENV=test tap --coverage --coverage-report=html --test-ignore=/mock/*",
+    "start": "nodemon server.js",
     "seed:test": "NODE_ENV=test npx sequelize-cli db:seed:all"
   },
   "keywords": [],
@@ -12,8 +14,12 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.19.1",
+    "dotenv": "^8.2.0",
     "fastify": "^2.11.0",
+    "fastify-helmet": "^3.0.2",
     "fastify-plugin": "^1.6.0",
+    "fastify-sensible": "^2.1.1",
+    "jsonwebtoken": "^8.5.1",
     "mysql2": "^2.1.0",
     "sequelize": "^5.21.3",
     "sequelize-cli": "^5.5.1"
