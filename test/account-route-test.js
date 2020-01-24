@@ -17,7 +17,7 @@ tap.test("GET /account/authenticate returns token", t => {
         t.error(err)
         t.strictEqual(response.statusCode, 200)
         t.strictEqual(response.headers["content-type"], "application/json; charset=utf-8")
-        t.deepEqual(jwt.verify(JSON.parse(response.payload)["token"], "OKCOOL")["api"], "creeperohman")
+        t.deepEqual(jwt.verify(JSON.parse(response.payload)["token"], "hey")["api"], "creeperohman")
     })
 
 })
