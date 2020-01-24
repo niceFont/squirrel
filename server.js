@@ -1,8 +1,14 @@
-const mysql = require("mysql2/promise")
+require("dotenv").config()
 const fastify = require("fastify")({ logger: true })
 
+fastify.register(require("fastify-sensible"))
+fastify.register(require("fastify-helmet"))
 fastify.register(require("./dbConnector"))
-fastify.register(require("./router"))
+fastify.register(require("./routes/userRoutes"))
+fastify.register(require("./routes/accountRoutes"))
+
+fastify.use("/user", require("./middlewares/auth"))
+
 const start = async () => {
     try {
         await fastify.listen(3000)
@@ -12,7 +18,6 @@ const start = async () => {
         process.exit(1)
     }
 }
-
 
 start()
 
