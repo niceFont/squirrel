@@ -19,7 +19,7 @@
     "fastify-helmet": "^3.0.2",
     "fastify-plugin": "^1.6.0",
     "fastify-sensible": "^2.1.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mysql2": "^2.1.0",
     "sequelize": "^5.21.3",
     "sequelize-cli": "^5.5.1"
